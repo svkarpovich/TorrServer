@@ -238,6 +238,28 @@ func WriteStatus(w io.Writer) {
 }
 
 func Preload(torr *Torrent, index int) {
+	if index == 0 {
+		st := torr.Status()
+		for _, f := range st.FileStats {
+	
+			file := torr.findFileIndex(f.Id)
+			size := file.Length()
+			
+			torr.Preload(f.Id, size)
+		}
+		
+		return
+	} 
+
+	if index < 0 {
+		index = -1 * index;
+		file := torr.findFileIndex(index)
+		size := file.Length()
+		torr.Preload(index, size)
+
+		return
+	} 
+
 	cache := float32(sets.BTsets.CacheSize)
 	preload := float32(sets.BTsets.PreloadCache)
 	size := int64((cache / 100.0) * preload)

@@ -25,7 +25,7 @@ func Start(port string, roSets, searchWA bool) {
 		log.TLogln("Port", port, "already in use! Abort")
 		os.Exit(1)
 	} else {
-		go cleanCache()
+ 		// go cleanCache()
 		settings.Port = port
 		web.Start(port)
 	}

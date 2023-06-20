@@ -13,6 +13,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/anacrolix/torrent/metainfo"
 )
 
 // Action: add, get, set, rem, list, drop
@@ -169,6 +170,10 @@ func dropTorrent(req torrReqJS, c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, errors.New("hash is empty"))
 		return
 	}
-	torr.DropTorrent(req.Hash)
+    hash := metainfo.NewHashFromHex(req.Hash)
+	torDB := torr.GetTorrentDB(hash)
+    if torDB == nil {
+        torr.DropTorrent(req.Hash)
+    }
 	c.Status(200)
 }

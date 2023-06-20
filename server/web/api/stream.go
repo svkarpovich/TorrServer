@@ -111,6 +111,7 @@ func stream(c *gin.Context) {
 	}
 	// preload torrent
 	if preload {
+        torr.SaveTorrentToDB(tor)
 		torr.Preload(tor, index)
 	}
 	// return stat if query
